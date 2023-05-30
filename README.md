@@ -1,6 +1,6 @@
 # cntYearTrends
 
-The *cntYearTrends* package enables performing simulations to analyze the properties of Solt's and Claassen's models for country-year trends data in different conditions including differnet levels of survey items' measurement non-invariance.
+The *cntYearTrends* package enables performing simulations to analyze the properties of Solt's and Claassen's models for country-year trends data in different conditions including different levels of survey items' measurement non-invariance.
 
 ## Installation
 
@@ -30,3 +30,5 @@ str(coverageScheme)
 set.seed(12345)
 run_simulation(conditions[1:2, ], coverageScheme, nIterPerCond = 1L)
 ```
+
+Simulation results will be saved to the file "cntYearTrends_results.RData".

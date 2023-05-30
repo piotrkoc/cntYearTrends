@@ -5,9 +5,9 @@
 #' @returns a data frame with columns `project`, `country` and `year`
 #' @seealso [generate_data]
 make_countries <- function(pCGY, nCountriesPerGroup) {
-  pCGY$year <- as.numeric(factor(pCGY$year))
-  pCGY$project <- as.numeric(factor(pCGY$project))
-  pCGY$countryGroup <- as.numeric(factor(pCGY$countryGroup))
+  pCGY$year <- as.integer(factor(pCGY$year))
+  pCGY$project <- as.integer(factor(pCGY$project))
+  pCGY$countryGroup <- as.integer(factor(pCGY$countryGroup))
   pCGY <- tidyr::expand_grid(pCGY,
                              country = 1L:nCountriesPerGroup)
   pCGY$country <- (pCGY$countryGroup - 1L)*nCountriesPerGroup + pCGY$country
@@ -68,8 +68,8 @@ generate_country_year_parameters <- function(nCountries, nYears,
     vars[, i] <- vars[, i - 1L] * stats::rlnorm(nCountries,
                                                 meanlog = meanLog, sdlog = sdLog)
   }
-  return(data.frame(country = rep(rownames(means), nYears),
-                    year = rep(colnames(means), each = nCountries),
+  return(data.frame(country = as.integer(rep(rownames(means), nYears)),
+                    year = as.integer(rep(colnames(means), each = nCountries)),
                     mean = as.vector(means),
                     var = as.vector(vars)))
 }

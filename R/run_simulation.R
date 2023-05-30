@@ -7,11 +7,11 @@
 #' scheme (see [check_coverage_scheme])
 #' @param nIterPerCond a positive integer - number of iterations to be run for
 #' each condition
-#' @param suffix optionally a string - suffix that will be added to the names
-#' of files storing simulation results (that will be saved to the disk)
+#' @param suffix optionally a string - suffix that will be added to the name
+#' of a file storing simulation results (that will be saved to the disk)
 #' @details
 #' See [run_iteration]
-#' @returns (invisibly) a list of three data frames:
+#' @returns (invisibly) a list of four data frames:
 #' \describe{
 #'   \item{modelSummaries}{basic model summary statistics in a *long* format}
 #'   \item{countryMeans}{generated country-year means (as returned by
@@ -19,7 +19,12 @@
 #'                       estimates from the models (standardized within the
 #'                       group of observed country-means)}
 #'   \item{items}{item parameters (generated, not estimated)}
+#'   \item{itemDistributions}{distributions (counts) of responses to items for
+#'                            each project-country-year-item}
 #' }
+#' Moreover, after completing each simulation condition-iteration function will
+#' save to the disk file "cntYearTrends_results\[suffix\].RData" storing the
+#' data frames listed above.
 #' @examples
 #' \dontrun{
 #' str(conditions)
@@ -36,7 +41,7 @@ run_simulation <- function(conditions, coverageScheme, nIterPerCond,
             as.integer(nIterPerCond) == nIterPerCond, nIterPerCond > 0,
             is.character(suffix), length(suffix) == 1L, !anyNA(suffix))
   models <- prepare_stan_models()
-  modelSummaries <- countryMeans <- items <- data.frame()
+  modelSummaries <- countryMeans <- items <- itemDistributions <- data.frame()
   for (i in seq_len(nIterPerCond)) {
     for (j in seq_len(nrow(conditions))) {
       resultsIter <- run_iteration(models, coverageScheme, conditions[j, ])
@@ -54,13 +59,19 @@ run_simulation <- function(conditions, coverageScheme, nIterPerCond,
               cond = j,
               resultsIter$items[, names(resultsIter$items) != "thresholds"],
               stats::setNames(as.data.frame(resultsIter$items$thresholds),
-                              paste0("threshold", seq_len(ncol(resultsIter$items))))))
-      save(conditions, modelSummaries, countryMeans, items,
+                              paste0("threshold",
+                                     seq_len(ncol(resultsIter$items$thresholds))))))
+      itemDistributions <- dplyr::bind_rows(itemDistributions,
+                                            cbind(i = i,
+                                                  j = j,
+                                                  resultsIter$itemDistributions))
+      save(conditions, modelSummaries, countryMeans, items, itemDistributions,
            file = paste0("cntYearTrends_results", suffix, ".RData"))
     }
   }
   invisible(list(conditions = conditions,
                  modelSummaries = modelSummaries,
                  countryMeans = countryMeans,
-                 items = items))
+                 items = items,
+                 itemDistributions = itemDistributions))
 }

@@ -16,11 +16,11 @@ scheme (see \link{check_coverage_scheme})}
 \item{nIterPerCond}{a positive integer - number of iterations to be run for
 each condition}
 
-\item{suffix}{optionally a string - suffix that will be added to the names
-of files storing simulation results (that will be saved to the disk)}
+\item{suffix}{optionally a string - suffix that will be added to the name
+of a file storing simulation results (that will be saved to the disk)}
 }
 \value{
-(invisibly) a list of three data frames:
+(invisibly) a list of four data frames:
 \describe{
 \item{modelSummaries}{basic model summary statistics in a \emph{long} format}
 \item{countryMeans}{generated country-year means (as returned by
@@ -28,7 +28,12 @@ of files storing simulation results (that will be saved to the disk)}
 estimates from the models (standardized within the
 group of observed country-means)}
 \item{items}{item parameters (generated, not estimated)}
+\item{itemDistributions}{distributions (counts) of responses to items for
+each project-country-year-item}
 }
+Moreover, after completing each simulation condition-iteration function will
+save to the disk file "cntYearTrends_results[suffix].RData" storing the
+data frames listed above.
 }
 \description{
 Runs the simulation.

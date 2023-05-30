@@ -4,7 +4,10 @@
 \alias{aggregate_data}
 \title{Data generation}
 \usage{
-aggregate_data(responses, variant = c("DCPO", "Claassen", "ClaassenMulti"))
+aggregate_data(
+  responses,
+  variant = c("distributions", "DCPO", "Claassen", "ClaassenMulti")
+)
 }
 \arguments{
 \item{responses}{a data frame - \code{responses} element of the list returned by

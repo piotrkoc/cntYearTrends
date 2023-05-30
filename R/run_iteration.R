@@ -54,5 +54,7 @@ run_iteration <- function(models, coverageScheme, condition) {
                                      claassen$modelSummary,
                                      claassenMulti$modelSummary),
               countryMeans = countryMeans,
-              items = data$items))
+              items = data$items,
+              itemDistributions = aggregate_data(data$responses,
+                                                 variant = "distributions")))
 }
