@@ -3,6 +3,7 @@
 export(aggregate_data)
 export(check_conditions)
 export(check_coverage_scheme)
+export(check_generated_data)
 export(estimate_claassen)
 export(estimate_dcpo)
 export(format_claassen)
