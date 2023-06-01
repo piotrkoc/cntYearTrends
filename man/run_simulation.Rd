@@ -4,7 +4,14 @@
 \alias{run_simulation}
 \title{Simulation flow}
 \usage{
-run_simulation(conditions, coverageScheme, nIterPerCond, suffix = "")
+run_simulation(
+  conditions,
+  coverageScheme,
+  nIterPerCond,
+  suffix = "",
+  iter = 1000L,
+  stanPars = list()
+)
 }
 \arguments{
 \item{conditions}{a data frame with simulation conditions, typically
@@ -18,6 +25,13 @@ each condition}
 
 \item{suffix}{optionally a string - suffix that will be added to the name
 of a file storing simulation results (that will be saved to the disk)}
+
+\item{iter}{optionally a positive integer - number of MCMC iterations in
+model estimation}
+
+\item{stanPars}{optionally a list with additional arguments that will be
+passed to the Stan models' \code{sample} method - see \link{estimate_dcpo} and
+\link{estimate_claassen}}
 }
 \value{
 (invisibly) a list of four data frames:

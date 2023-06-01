@@ -11,7 +11,7 @@ estimate_claassen(
   iter = 1000L,
   pars = list(max_treedepth = 14, adapt_delta = 0.99, step_size = 0.005, seed = 3724,
     chains = 4, parallel_chains = 4, iter_warmup = iter/2, iter_sampling = iter/2,
-    refresh = iter/50, init = 0.1)
+    refresh = iter/10, init = 0.1)
 )
 }
 \arguments{
@@ -20,7 +20,7 @@ element of a list returned by \link{generate_data}}
 
 \item{model}{an object of class \emph{CmdStanModel} representing Solt's model}
 
-\item{variant}{a string indicating whether tto estimate the original
+\item{variant}{a string indicating whether to estimate the original
 dichotomous Claassen's model or its multinomial extension}
 
 \item{iter}{a positive integer - number of MCMC iterations}

@@ -22,7 +22,7 @@ estimate_dcpo <- function(responses, model, iter = 1000L,
                                       parallel_chains = 4,
                                       iter_warmup = iter / 2,
                                       iter_sampling = iter / 2,
-                                      refresh = iter / 50,
+                                      refresh = iter / 10,
                                       init = 0.1)) {
   stopifnot(is.data.frame(responses),
             all(c("project", "country", "year", "item",
@@ -40,7 +40,7 @@ estimate_dcpo <- function(responses, model, iter = 1000L,
                       parallel_chains = 4,
                       iter_warmup = iter / 2,
                       iter_sampling = iter / 2,
-                      refresh = iter / 50,
+                      refresh = iter / 10,
                       init = 0.1)
   for (p in seq_along(pars)) defaultPars[[names(pars)[p]]] <- pars[[p]]
   pars <- defaultPars

@@ -4,7 +4,7 @@
 #' @param responses a data frame with responses - typically the `responses`
 #' element of a list returned by [generate_data]
 #' @param model an object of class *CmdStanModel* representing Solt's model
-#' @param variant a string indicating whether tto estimate the original
+#' @param variant a string indicating whether to estimate the original
 #' dichotomous Claassen's model or its multinomial extension
 #' @param iter a positive integer - number of MCMC iterations
 #' @param pars a list of additional parameters that are passed to the `model`'s
@@ -26,7 +26,7 @@ estimate_claassen <- function(responses, model,
                                           parallel_chains = 4,
                                           iter_warmup = iter / 2,
                                           iter_sampling = iter / 2,
-                                          refresh = iter / 50,
+                                          refresh = iter / 10,
                                           init = 0.1)) {
   variant <- match.arg(variant, several.ok = FALSE)
   stopifnot(is.data.frame(responses),
@@ -45,7 +45,7 @@ estimate_claassen <- function(responses, model,
                       parallel_chains = 4,
                       iter_warmup = iter / 2,
                       iter_sampling = iter / 2,
-                      refresh = iter / 50,
+                      refresh = iter / 10,
                       init = 0.1)
   for (p in seq_along(pars)) defaultPars[[names(pars)[p]]] <- pars[[p]]
   pars <- defaultPars

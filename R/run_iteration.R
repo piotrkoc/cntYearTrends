@@ -23,28 +23,33 @@
 #'                       group of observed country-means)}
 #'   \item{items}{item parameters (generated, not estimated)}
 #' }
-run_iteration <- function(models, coverageScheme, condition) {
+run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
   stopifnot(is.list(models), all(c("dcpo", "claassen") %in% names(models)),
             all(sapply(models, inherits, what = "CmdStanModel")),
             is.data.frame(coverageScheme),
-            is.data.frame(condition), nrow(condition) == 1L)
+            is.data.frame(condition), nrow(condition) == 1L,
+            is.numeric(iter), length(iter) == 1L, iter > 0,
+            as.integer(iter) == iter, is.list(stanPars))
   condition <- as.list(condition)
   data <- do.call(generate_data, c(pCGY = list(coverageScheme), condition))
   countryMeans <- data$countryYears
 
-  dcpo <- estimate_dcpo(data$responses, models$dcpo, iter = 1000L)
+  dcpo <- estimate_dcpo(data$responses, models$dcpo, iter = iter,
+                        pars = stanPars)
   if (!is.null(dcpo$countryMeans)) {
     countryMeans <- merge(countryMeans, dcpo$countryMeans,
                           by = c("country", "year"), all.x = TRUE)
   }
   claassen <- estimate_claassen(data$responses, models$claassen,
-                                variant = "dichotomous", iter = 1000L)
+                                variant = "dichotomous", iter = iter,
+                                pars = stanPars)
   if (!is.null(claassen$countryMeans)) {
     countryMeans <- merge(countryMeans, claassen$countryMeans,
                           by = c("country", "year"), all.x = TRUE)
   }
   claassenMulti <- estimate_claassen(data$responses, models$claassen,
-                                     variant = "multinomial", iter = 1000L)
+                                     variant = "multinomial", iter = iter,
+                                     pars = stanPars)
   if (!is.null(claassenMulti$countryMeans)) {
     countryMeans <- merge(countryMeans, claassenMulti$countryMeans,
                           by = c("country", "year"), all.x = TRUE)

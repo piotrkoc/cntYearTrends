@@ -4,7 +4,7 @@
 \alias{run_iteration}
 \title{Simulation flow}
 \usage{
-run_iteration(models, coverageScheme, condition)
+run_iteration(models, coverageScheme, condition, iter, stanPars)
 }
 \arguments{
 \item{models}{a list of \emph{CmdStanModel} objects - typically returned by
@@ -15,6 +15,13 @@ scheme (see \link{check_coverage_scheme})}
 
 \item{condition}{a one-row data frame with additional parameters specifying
 data generation process that will be passed to \link{generate_data}}
+
+\item{iter}{optionally a positive integer - number of MCMC iterations in
+model estimation}
+
+\item{stanPars}{optionally a list with additional arguments that will be
+passed to the Stan models' \code{sample} method - see \link{estimate_dcpo} and
+\link{estimate_claassen}}
 }
 \value{
 a list of three data frames:
