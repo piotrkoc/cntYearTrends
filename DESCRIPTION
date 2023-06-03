@@ -15,7 +15,7 @@ License: MIT + file LICENSE
 Depends:
     R (>= 4.0.0)
 Imports:
-    dplyr (>= 1.0.4),
+    dplyr (>= 1.1.0),
     tidyr (>= 1.2.0),
     mnormt,
     cmdstanr
