@@ -13,10 +13,10 @@ generate_items(
   difficultyCSD,
   difficultyYSD,
   relThresholdsL,
-  unstLoadingsCL = 3 * unstLoadingsCSD,
-  unstLoadingsYL = 3 * unstLoadingsYSD,
-  difficultyCL = 3 * difficultyCSD,
-  difficultyYL = 3 * difficultyYSD
+  unstLoadingsCL = 2 * unstLoadingsCSD,
+  unstLoadingsYL = 2 * unstLoadingsYSD,
+  difficultyCL = 2 * difficultyCSD,
+  difficultyYL = 2 * difficultyYSD
 )
 }
 \arguments{

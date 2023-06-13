@@ -6,7 +6,8 @@
 \usage{
 aggregate_data(
   responses,
-  variant = c("distributions", "DCPO", "Claassen", "ClaassenMulti")
+  variant = c("distributions", "distributionsClaassen", "DCPO", "Claassen",
+    "ClaassenMulti")
 )
 }
 \arguments{

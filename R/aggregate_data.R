@@ -7,14 +7,18 @@
 #' @returns a data frame
 #' @export
 aggregate_data <- function(responses,
-                           variant = c("distributions", "DCPO", "Claassen",
-                                       "ClaassenMulti")) {
+                           variant = c("distributions", "distributionsClaassen",
+                                       "DCPO", "Claassen", "ClaassenMulti")) {
   variant <- match.arg(variant, several.ok = FALSE)
   stopifnot(is.data.frame(responses),
             all(c("project", "country", "year", "item",
                   "respScaleLength", "respondent",
                   "response", "Item", "Item_Cnt") %in% names(responses)))
-  if (variant == "distributions") {
+  if (variant %in% c("distributions", "distributionsClaassen")) {
+    if (variant == "distributionsClaassen") {
+      responses$response <-
+        as.integer(responses$response >= (responses$respScaleLength / 2))
+    }
     responses$n <- 1L
     responses <- stats::aggregate(responses[, "n", drop = FALSE],
                                   responses[, c("project", "country", "year",
@@ -25,8 +29,7 @@ aggregate_data <- function(responses,
                           idvar = c("project", "country", "year", "item",
                                     "respScaleLength"),
                           timevar = "response", ids = "n"))
-  }
-  if (variant == "DCPO") {
+  } else if (variant == "DCPO") {
     responses$n <- 1L
     names(responses)[names(responses) == "project"] <- "survey"
     names(responses)[names(responses) == "response"] <- "r"

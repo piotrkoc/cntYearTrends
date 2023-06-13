@@ -1,3 +1,19 @@
+# cntYearTrends 0.2.1 (13.06.2023)
+
+## New features
+
+-   `check_generated_data()` reports also on the frequency of one point distributions of responses dichotomized according to the (original) Claassen's codding scheme (i.e. `>= response_scale_length / 2`).
+
+## Other changes
+
+-   The dataset `conditions` was changed to assure that items in the generated data will have one-point distribution (in some project-country-years) much less frequently. For this purpose:
+    - `projectBiasesSD` was decreased from 1 to 0.5,
+    - `nRespondents` was increased from 1000 to 1500,
+    - `relThresholdsL` was decreased from 1 to 0.5,
+    - `arVarStartLB` was increased from 0.4. to 0.6 and `arVarStartUB` was decreased from 1.6 to 1.4.
+-   Values in the use example for the `prepare_conditions()` were changed accordingly.
+-   For the same reasons, multiplication factors in the default values of the `unstLoadingsCL`, `unstLoadingsYL`, `difficultyCL` and `difficultyYL` arguments to the `generate_items()` were changed from 3 to 2.
+
 # cntYearTrends 0.2.0 (1.06.2023)
 
 ## New features

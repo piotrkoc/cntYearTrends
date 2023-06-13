@@ -27,6 +27,17 @@
 #'                          as above}
 #'   \item{q95PctZeroCells}{95. percentile as above}
 #'   \item{q90PctZeroCells}{90. percentile as above}
+#'   \item{maxNPointDistribClaassen}{maximum number of project-country-year-items
+#'                                   with one-point distributions (i.e. with
+#'                                   only one cell with non-zero frequency)
+#'                                   across replications of generating data
+#'                                   under a given condition}
+#'   \item{q95NPointDistribClaassen}{95. percentile as above}
+#'   \item{q90NPointDistribClaassen}{90. percentile as above}
+#'   \item{maxPctPointDistribClaassen}{maximum percent of
+#'                                     project-country-year-items as above}
+#'   \item{q95PctPointDistribClaassen}{95. percentile as above}
+#'   \item{q90PctPointDistribClaassen}{90. percentile as above}
 #' }
 #' @export
 check_generated_data <- function(conditions, coverageScheme, nIterPerCond) {
@@ -47,7 +58,13 @@ check_generated_data <- function(conditions, coverageScheme, nIterPerCond) {
     q90NZeroCells = rep(NA_real_, nrow(conditions)),
     maxPctZeroCells = rep(NA_real_, nrow(conditions)),
     q95PctZeroCells = rep(NA_real_, nrow(conditions)),
-    q90PctZeroCells = rep(NA_real_, nrow(conditions)))
+    q90PctZeroCells = rep(NA_real_, nrow(conditions)),
+    maxNPointDistribClaassen = rep(NA_real_, nrow(conditions)),
+    q95NPointDistribClaassen = rep(NA_real_, nrow(conditions)),
+    q90NPointDistribClaassen = rep(NA_real_, nrow(conditions)),
+    maxPctPointDistribClaassen = rep(NA_real_, nrow(conditions)),
+    q95PctPointDistribClaassen = rep(NA_real_, nrow(conditions)),
+    q90PctPointDistribClaassen = rep(NA_real_, nrow(conditions)))
   pb <- utils::txtProgressBar(min = 0, max = nrow(conditions) * nIterPerCond,
                               style = 3)
   for (j in seq_len(nrow(conditions))) {
@@ -55,7 +72,9 @@ check_generated_data <- function(conditions, coverageScheme, nIterPerCond) {
       data.frame(nPointDistrib = rep(NA_integer_, nIterPerCond),
                  nZeroCells = rep(NA_integer_, nIterPerCond),
                  pctPointDistrib = rep(NA_integer_, nIterPerCond),
-                 pctZeroCells = rep(NA_integer_, nIterPerCond))
+                 pctZeroCells = rep(NA_integer_, nIterPerCond),
+                 nPointDistribClaassen = rep(NA_integer_, nIterPerCond),
+                 pctPointDistribClaassen = rep(NA_integer_, nIterPerCond))
     for (i in seq_len(nIterPerCond)) {
       data <- do.call(generate_data, c(pCGY = list(coverageScheme),
                                        as.list(conditions[j, ])))
@@ -72,11 +91,21 @@ check_generated_data <- function(conditions, coverageScheme, nIterPerCond) {
       distributions$cellsBelow10 <-
         distributions$respScaleLength > distributions$nOver9
 
-      conditionSummary[i, c("nPointDistrib", "nZeroCells")] <-
-        colSums(distributions[, c("pointDistrib", "zeroCells")])
-      conditionSummary[i, c("pctPointDistrib", "pctZeroCells")] <-
+      distributionsClaassen <-
+        aggregate_data(data$responses, "distributionsClaassen")
+      distributions$pointDistribClaassen <-
+        0 == rowSums(!is.na(distributionsClaassen[, grep("^n\\.[[:digit:]]+$",
+                                                         names(distributionsClaassen))]))
+
+      conditionSummary[i, c("nPointDistrib", "nZeroCells",
+                            "nPointDistribClaassen")] <-
+        colSums(distributions[, c("pointDistrib", "zeroCells",
+                                  "pointDistribClaassen")])
+      conditionSummary[i, c("pctPointDistrib", "pctZeroCells",
+                            "pctPointDistribClaassen")] <-
         100 * conditionSummary[i, c("nPointDistrib",
-                                    "nZeroCells")] / nrow(distributions)
+                                    "nZeroCells",
+                                    "nPointDistribClaassen")] / nrow(distributions)
       utils::setTxtProgressBar(pb, utils::getTxtProgressBar(pb) + 1)
     }
     results$maxNPointDistrib[j] <- max(conditionSummary$nPointDistrib)
@@ -99,6 +128,18 @@ check_generated_data <- function(conditions, coverageScheme, nIterPerCond) {
       stats::quantile(conditionSummary$pctZeroCells, 0.95)
     results$q90PctZeroCells[j] <-
       stats::quantile(conditionSummary$pctZeroCells, 0.9)
+    results$maxNPointDistribClaassen[j] <-
+      max(conditionSummary$nPointDistribClaassen)
+    results$q95NPointDistribClaassen[j] <-
+      stats::quantile(conditionSummary$nPointDistribClaassen, 0.95)
+    results$q90NPointDistribClaassen[j] <-
+      stats::quantile(conditionSummary$nPointDistribClaassen, 0.9)
+    results$maxPctPointDistribClaassen[j] <-
+      max(conditionSummary$pctPointDistribClaassen)
+    results$q95PctPointDistribClaassen[j] <-
+      stats::quantile(conditionSummary$pctPointDistribClaassen, 0.95)
+    results$q90PctPointDistribClaassen[j] <-
+      stats::quantile(conditionSummary$pctPointDistribClaassen, 0.9)
   }
   close(pb)
   return(cbind(conditions, results))

@@ -40,6 +40,17 @@ condition}
 as above}
 \item{q95PctZeroCells}{95. percentile as above}
 \item{q90PctZeroCells}{90. percentile as above}
+\item{maxNPointDistribClaassen}{maximum number of project-country-year-items
+with one-point distributions (i.e. with
+only one cell with non-zero frequency)
+across replications of generating data
+under a given condition}
+\item{q95NPointDistribClaassen}{95. percentile as above}
+\item{q90NPointDistribClaassen}{90. percentile as above}
+\item{maxPctPointDistribClaassen}{maximum percent of
+project-country-year-items as above}
+\item{q95PctPointDistribClaassen}{95. percentile as above}
+\item{q90PctPointDistribClaassen}{90. percentile as above}
 }
 }
 \description{

@@ -47,23 +47,23 @@
 #' @examples
 #' constant <- data.frame(
 #'   # projects' characteristics
-#'   nRespondents = 1000L,
-#'   projectBiasesSD = 1, # project biases SD
+#'   nRespondents = 1500L,
+#'   projectBiasesSD = 0.5, # project biases SD
 #'   nItemsProbs = "c(`1` = 0.3, `2` = 0.4, `3` = 0.3)", # number of items in a project
 #'   respScaleLengthProbs = "c( `2` = 0.1, `4` = 0.2, `5` = 0.3, `7` = 0.3, `10` = 0.1)",
 #'   # country-means and SDs autoregressive process parameters #####################
 #'   arMeanStartSD = 1, # SD of country means in the first year
 #'   arMeanChangeSD = 0.3, # SD of change of country means relatively to the previous year
-#'   arVarStartLB = 0.4, # a lower bound of a uniform distrib.
+#'   arVarStartLB = 0.6, # a lower bound of a uniform distrib.
 #'                       # (of within-countries SDs in the first year)
-#'   arVarStartUB = 1.6, # an upper bound of a uniform distrib.
+#'   arVarStartUB = 1.4, # an upper bound of a uniform distrib.
 #'                       # (of within-countries SDs in the first year)
 #'   arVarChangeSD = 0, # SD of a multiplicative change of within-country SD relatively to
 #'                      # the previous year (this is parameter of a log-normal distrib.)
 #'   # default item parameters
 #'   unstLoadingDefault = 0.75,
 #'   difficultyDefault = 0, # mean of thresholds
-#'   relThresholdsL = 1 # +- this will be set as limits of the uniform distrib.
+#'   relThresholdsL = 0.5 # +- this will be set as limits of the uniform distrib.
 #' )
 #' (invariance = rbind(
 #'   "full metric + small thresholds var." = data.frame(

@@ -109,10 +109,10 @@ generate_items <- function(pCY,
                            # +- this will be set as limits of the uniform distrib.
                            relThresholdsL,
                            # +- these will be set as limits of trunc.-norm. distribs.
-                           unstLoadingsCL = 3*unstLoadingsCSD,
-                           unstLoadingsYL = 3*unstLoadingsYSD,
-                           difficultyCL = 3*difficultyCSD,
-                           difficultyYL = 3*difficultyYSD) {
+                           unstLoadingsCL = 2*unstLoadingsCSD,
+                           unstLoadingsYL = 2*unstLoadingsYSD,
+                           difficultyCL = 2*difficultyCSD,
+                           difficultyYL = 2*difficultyYSD) {
   # making rmtruncnorm not to fail in corner cases
   if (unstLoadingsCSD == 0) unstLoadingsCL <- 0.1
   if (unstLoadingsYSD == 0) unstLoadingsYL <- 0.1
