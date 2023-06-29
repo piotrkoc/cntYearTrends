@@ -39,6 +39,8 @@
 #'   \item{q95PctPointDistribClaassen}{95. percentile as above}
 #'   \item{q90PctPointDistribClaassen}{90. percentile as above}
 #' }
+#' @examples
+#' check_generated_data(conditions[1:2, ], coverageScheme, 10)
 #' @export
 check_generated_data <- function(conditions, coverageScheme, nIterPerCond) {
   check_conditions(conditions)

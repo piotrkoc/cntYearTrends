@@ -1,6 +1,6 @@
 Package: cntYearTrends
 Title: Simulation studies on country-year trends models
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: 
     c(person("Tomasz", "Zoltak", ,
              email = "tomek@zozlak.org",

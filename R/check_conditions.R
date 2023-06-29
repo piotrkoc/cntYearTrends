@@ -7,7 +7,7 @@
 get_required_conditions_names <- function() {
   return(c("nRespondents", "projectBiasesSD", "nItemsProbs",
            "respScaleLengthProbs", "arMeanStartSD", "arMeanChangeSD",
-           "arVarStartLB", "arVarStartUB", "arVarChangeSD",
+           "arMeanBounds", "arVarStartLB", "arVarStartUB", "arVarChangeSD",
            "unstLoadingDefault", "difficultyDefault", "relThresholdsL",
            "unstLoadingsCSD", "unstLoadingsYSD",
            "difficultyCSD", "difficultyYSD",
@@ -97,6 +97,15 @@ check_conditions <- function(conditions) {
             all(conditions$arMeanStartSD >= 0),
             is.numeric(conditions$arMeanChangeSD),
             all(conditions$arMeanChangeSD >= 0),
+            is.character(conditions$arMeanBounds),
+            "All expresions given by `arMeanBounds` must generate numeric vectors of length 2 with no missing values." =
+              length(eval(str2expression(conditions$arMeanBounds))) == 2L,
+            "All expresions given by `arMeanBounds` must generate numeric vectors of length 2 with no missing values." =
+              !anyNA(eval(str2expression(conditions$arMeanBounds))),
+            "All expresions given by `arMeanBounds` must generate numeric vectors of length 2 with no missing values." =
+              is.numeric(eval(str2expression(conditions$arMeanBounds))),
+            "All expresions given by `arMeanBounds` must generate numeric vectors in which the second element is greater than the first." =
+              all(sum(eval(str2expression(conditions$arMeanBounds))*c(-1,1)) > 0),
             is.numeric(conditions$arVarStartLB),
             is.numeric(conditions$arVarStartUB),
             is.numeric(conditions$arVarChangeSD),

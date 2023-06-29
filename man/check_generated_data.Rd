@@ -58,3 +58,6 @@ Checks whether the data generated according to the given simulations contains
 empty cells or cells with only several observations in distributions of
 answers within a given county-year-project.
 }
+\examples{
+check_generated_data(conditions[1:2, ], coverageScheme, 10)
+}

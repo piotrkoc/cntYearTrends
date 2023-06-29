@@ -1,3 +1,9 @@
+# cntYearTrends 0.2.2 (29.06.2023)
+
+## New features
+
+-   Country-year means can be generated within given bounds using additional simulation parameter `arMeanBounds`.
+
 # cntYearTrends 0.2.1 (13.06.2023)
 
 ## New features

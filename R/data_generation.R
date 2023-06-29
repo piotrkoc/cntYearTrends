@@ -52,6 +52,7 @@ generate_projects <- function(nProjects, projectBiasesSD,
 #' @seealso [generate_data], [generate_latent]
 generate_country_year_parameters <- function(nCountries, nYears,
                                              arMeanStartSD, arMeanChangeSD,
+                                             arMeanBounds,
                                              arVarStartLB, arVarStartUB,
                                              arVarChangeSD) {
   sdLog <- log(arVarChangeSD^2 + 1)^0.5
@@ -59,12 +60,21 @@ generate_country_year_parameters <- function(nCountries, nYears,
   means <- vars <- matrix(NA_real_, nrow = nCountries, ncol = nYears,
                           dimnames = list(1L:nCountries,
                                           1L:nYears))
-  means[, "1"] <- stats::rnorm(nCountries, mean = 0, sd = arMeanStartSD)
+  means[, "1"] <- mnormt::rmtruncnorm(nCountries, mean = 0,
+                                      varcov = arMeanStartSD^2,
+                                      lower = arMeanBounds[1],
+                                      upper = arMeanBounds[2])
   vars[, "1"] <- stats::runif(nCountries,
                               min = arVarStartLB, max = arVarStartUB)
   for (i in 2L:nYears) {
     means[, i] <- means[, i - 1L] + stats::rnorm(nCountries, mean = 0,
                                                  sd = arMeanChangeSD)
+    means[, i] <- ifelse(means[, i] < arMeanBounds[1],
+                         arMeanBounds[1] + (arMeanBounds[1] - means[, i]),
+                         means[, i])
+    means[, i] <- ifelse(means[, i] > arMeanBounds[2],
+                         arMeanBounds[2] - (means[, i] - arMeanBounds[2]),
+                         means[, i])
     vars[, i] <- vars[, i - 1L] * stats::rlnorm(nCountries,
                                                 meanlog = meanLog, sdlog = sdLog)
   }
@@ -218,6 +228,7 @@ generate_responses <- function(latent, items) {
 #' @param difficultyCSD a numeric - see [prepare_conditions]
 #' @param difficultyYSD a numeric - see [prepare_conditions]
 #' @param relThresholdsL a numeric - see [prepare_conditions]
+#' @param arMeanBounds a string - see [prepare_conditions]
 #' @returns a list of four data frames:
 #' \describe{
 #'   \item{countryYears}{,}
@@ -240,9 +251,10 @@ generate_data <- function(pCGY,
                           unstLoadingDefault, difficultyDefault,
                           unstLoadingsCSD, unstLoadingsYSD,
                           difficultyCSD, difficultyYSD,
-                          relThresholdsL) {
+                          relThresholdsL, arMeanBounds) {
   nItemsProbs <- eval(str2expression(as.character(nItemsProbs)))
   respScaleLengthProbs <- eval(str2expression(as.character(respScaleLengthProbs)))
+  arMeanBounds <- eval(str2expression(as.character(arMeanBounds)))
 
   pCGY <- pCGY[pCGY$variant == variant, ]
 
@@ -261,6 +273,7 @@ generate_data <- function(pCGY,
                                      nYears = max(pCGY$year) - min(pCGY$year) + 1L,
                                      arMeanStartSD = arMeanStartSD,
                                      arMeanChangeSD = arMeanChangeSD,
+                                     arMeanBounds = arMeanBounds,
                                      arVarStartLB = arVarStartLB,
                                      arVarStartUB = arVarStartUB,
                                      arVarChangeSD = arVarChangeSD)

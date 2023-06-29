@@ -23,7 +23,8 @@ generate_data(
   unstLoadingsYSD,
   difficultyCSD,
   difficultyYSD,
-  relThresholdsL
+  relThresholdsL,
+  arMeanBounds
 )
 }
 \arguments{
@@ -67,6 +68,8 @@ generated for each group of countries (compare \link{check_coverage_scheme})}
 \item{difficultyYSD}{a numeric - see \link{prepare_conditions}}
 
 \item{relThresholdsL}{a numeric - see \link{prepare_conditions}}
+
+\item{arMeanBounds}{a string - see \link{prepare_conditions}}
 }
 \value{
 a list of four data frames:

@@ -9,6 +9,7 @@ generate_country_year_parameters(
   nYears,
   arMeanStartSD,
   arMeanChangeSD,
+  arMeanBounds,
   arVarStartLB,
   arVarStartUB,
   arVarChangeSD
@@ -24,6 +25,8 @@ generate_country_year_parameters(
 \item{arMeanStartSD}{a numeric - see \link{prepare_conditions}}
 
 \item{arMeanChangeSD}{a numeric - see \link{prepare_conditions}}
+
+\item{arMeanBounds}{a string - see \link{prepare_conditions}}
 
 \item{arVarStartLB}{a numeric - see \link{prepare_conditions}}
 

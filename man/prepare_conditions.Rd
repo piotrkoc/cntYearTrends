@@ -34,6 +34,7 @@ of the data frames provided as function arguments:
 \describe{
 \item{arMeanStartSD}{ (a number) - std. dev. of country means in the first year}
 \item{arMeanChangeSD}{ (a number) - std. dev. of change of country means relatively to the previous year}
+\item{arMeanBounds}{ (a string with expression creating numeric vector of length 2) - bounds for country-year means: set to "c(-Inf, Inf)"` so bounds do not apply, otherwise means in the first period will be generated from truncated-normal distribution and in other periods will \emph{bounce} at given bounds.}
 \item{arVarStartLB}{ (a number) - a lower bound of a uniform distrib. (of within-countries std. devs. in the first year)}
 \item{arVarStartUB}{ (a number) - an upper bound of a uniform distrib. (of within-countries std. devs. in the first year)}
 \item{arVarChangeSD}{ (a number) - std. dev. of a multiplicative change of within-country SD relatively to the previous year (this is parameter of a log-normal distrib.)}
@@ -67,6 +68,7 @@ constant <- data.frame(
   # country-means and SDs autoregressive process parameters #####################
   arMeanStartSD = 1, # SD of country means in the first year
   arMeanChangeSD = 0.3, # SD of change of country means relatively to the previous year
+  arMeanBounds = "c(-Inf, Inf)", # no bounds for country-year means
   arVarStartLB = 0.6, # a lower bound of a uniform distrib.
                       # (of within-countries SDs in the first year)
   arVarStartUB = 1.4, # an upper bound of a uniform distrib.
