@@ -51,29 +51,28 @@ generate_projects <- function(nProjects, projectBiasesSD,
 #' and `var`
 #' @seealso [generate_data], [generate_latent]
 generate_country_year_parameters <- function(nCountries, nYears,
-                                             arMeanStartSD, arMeanChangeSD,
-                                             arMeanBounds,
+                                             arMeanStartLB, arMeanStartUB,
+                                             arMeanChangeSD,
                                              arVarStartLB, arVarStartUB,
-                                             arVarChangeSD) {
+                                             arVarChangeSD,
+                                             arMeanTrendLB, arMeanTrendUB) {
   sdLog <- log(arVarChangeSD^2 + 1)^0.5
   meanLog <- sdLog^2/2
   means <- vars <- matrix(NA_real_, nrow = nCountries, ncol = nYears,
                           dimnames = list(1L:nCountries,
                                           1L:nYears))
-  means[, "1"] <- mnormt::rmtruncnorm(nCountries, mean = 0,
-                                      varcov = arMeanStartSD^2,
-                                      lower = arMeanBounds[1],
-                                      upper = arMeanBounds[2])
+  means[, "1"] <- stats::runif(nCountries, min = arMeanStartLB, max = arMeanStartUB)
   vars[, "1"] <- stats::runif(nCountries,
                               min = arVarStartLB, max = arVarStartUB)
   for (i in 2L:nYears) {
+
     means[, i] <- means[, i - 1L] + stats::rnorm(nCountries, mean = 0,
                                                  sd = arMeanChangeSD)
-    means[, i] <- ifelse(means[, i] < arMeanBounds[1],
-                         arMeanBounds[1] + (arMeanBounds[1] - means[, i]),
+    means[, i] <- ifelse(means[, i] < arMeanTrendLB,
+                         arMeanTrendLB + (arMeanTrendLB - means[, i]),
                          means[, i])
-    means[, i] <- ifelse(means[, i] > arMeanBounds[2],
-                         arMeanBounds[2] - (means[, i] - arMeanBounds[2]),
+    means[, i] <- ifelse(means[, i] > arMeanTrendUB,
+                         arMeanTrendUB - (means[, i] - arMeanTrendUB),
                          means[, i])
     vars[, i] <- vars[, i - 1L] * stats::rlnorm(nCountries,
                                                 meanlog = meanLog, sdlog = sdLog)
@@ -216,11 +215,14 @@ generate_responses <- function(latent, items) {
 #' @param projectBiasesSD a numeric - see [prepare_conditions]
 #' @param nItemsProbs a string - see [prepare_conditions]
 #' @param respScaleLengthProbs a string - see [prepare_conditions]
-#' @param arMeanStartSD a numeric - see [prepare_conditions]
+#' @param arMeanStartLB a numeric - see [prepare_conditions]
+#' @param arMeanStartUB a numeric - see [prepare_conditions]
 #' @param arMeanChangeSD a numeric - see [prepare_conditions]
 #' @param arVarStartLB a numeric - see [prepare_conditions]
 #' @param arVarStartUB a numeric - see [prepare_conditions]
 #' @param arVarChangeSD a numeric - see [prepare_conditions]
+#' @param arMeanTrendLB a numeric - see [prepare_conditions]
+#' @param arMeanTrendUB a numeric - see [prepare_conditions]
 #' @param unstLoadingDefault a numeric - see [prepare_conditions]
 #' @param difficultyDefault a numeric - see [prepare_conditions]
 #' @param unstLoadingsCSD a numeric - see [prepare_conditions]
@@ -228,7 +230,6 @@ generate_responses <- function(latent, items) {
 #' @param difficultyCSD a numeric - see [prepare_conditions]
 #' @param difficultyYSD a numeric - see [prepare_conditions]
 #' @param relThresholdsL a numeric - see [prepare_conditions]
-#' @param arMeanBounds a string - see [prepare_conditions]
 #' @returns a list of four data frames:
 #' \describe{
 #'   \item{countryYears}{,}
@@ -245,16 +246,16 @@ generate_data <- function(pCGY,
                           nRespondents, nCountriesPerGroup, variant,
                           projectBiasesSD, nItemsProbs, respScaleLengthProbs,
                           # country-means and SDs autoregressive process parameters
-                          arMeanStartSD, arMeanChangeSD,
+                          arMeanStartLB, arMeanStartUB, arMeanChangeSD,
+                          arMeanTrendLB, arMeanTrendUB,
                           arVarStartLB, arVarStartUB, arVarChangeSD,
                           # item parameters
                           unstLoadingDefault, difficultyDefault,
                           unstLoadingsCSD, unstLoadingsYSD,
                           difficultyCSD, difficultyYSD,
-                          relThresholdsL, arMeanBounds) {
+                          relThresholdsL) {
   nItemsProbs <- eval(str2expression(as.character(nItemsProbs)))
   respScaleLengthProbs <- eval(str2expression(as.character(respScaleLengthProbs)))
-  arMeanBounds <- eval(str2expression(as.character(arMeanBounds)))
 
   pCGY <- pCGY[pCGY$variant == variant, ]
 
@@ -271,9 +272,11 @@ generate_data <- function(pCGY,
   countryYears <-
     generate_country_year_parameters(nCountries = nCountries,
                                      nYears = max(pCGY$year) - min(pCGY$year) + 1L,
-                                     arMeanStartSD = arMeanStartSD,
+                                     arMeanStartLB = arMeanStartLB,
+                                     arMeanStartUB = arMeanStartUB,
                                      arMeanChangeSD = arMeanChangeSD,
-                                     arMeanBounds = arMeanBounds,
+                                     arMeanTrendLB = arMeanTrendLB,
+                                     arMeanTrendUB = arMeanTrendUB,
                                      arVarStartLB = arVarStartLB,
                                      arVarStartUB = arVarStartUB,
                                      arVarChangeSD = arVarChangeSD)
