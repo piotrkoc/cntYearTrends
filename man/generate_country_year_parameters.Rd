@@ -7,12 +7,14 @@
 generate_country_year_parameters(
   nCountries,
   nYears,
-  arMeanStartSD,
+  arMeanStartLB,
+  arMeanStartUB,
   arMeanChangeSD,
-  arMeanBounds,
   arVarStartLB,
   arVarStartUB,
-  arVarChangeSD
+  arVarChangeSD,
+  arMeanTrendLB,
+  arMeanTrendUB
 )
 }
 \arguments{
@@ -22,17 +24,21 @@ generate_country_year_parameters(
 \item{nYears}{an integer - the number of years
 (compare \link{check_coverage_scheme})}
 
-\item{arMeanStartSD}{a numeric - see \link{prepare_conditions}}
+\item{arMeanStartLB}{a numeric - see \link{prepare_conditions}}
+
+\item{arMeanStartUB}{a numeric - see \link{prepare_conditions}}
 
 \item{arMeanChangeSD}{a numeric - see \link{prepare_conditions}}
-
-\item{arMeanBounds}{a string - see \link{prepare_conditions}}
 
 \item{arVarStartLB}{a numeric - see \link{prepare_conditions}}
 
 \item{arVarStartUB}{a numeric - see \link{prepare_conditions}}
 
 \item{arVarChangeSD}{a numeric - see \link{prepare_conditions}}
+
+\item{arMeanTrendLB}{a numeric - see \link{prepare_conditions}}
+
+\item{arMeanTrendUB}{a numeric - see \link{prepare_conditions}}
 }
 \value{
 a data frame with columns \code{country}, \code{year}, \code{mean}

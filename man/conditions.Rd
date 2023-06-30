@@ -5,7 +5,7 @@
 \alias{conditions}
 \title{Simulation conditions used in our study}
 \format{
-A data frame with 24 rows and 19 columns.
+A data frame with 24 rows and 21 columns.
 See \link{check_conditions} for the columns description.
 }
 \usage{

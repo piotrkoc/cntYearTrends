@@ -72,22 +72,7 @@ check_conditions <- function(conditions) {
                 paste(respScaleLengthProbsProblems, collapse = "`,\n  `"), "`.\n",
                 "These expressions either don't evaluate to numeric vectors or don't evaluate at all."))
   }
-  
-  if(conditions$arMeanStartLB > conditions$arMeanStartUB) {
-    stop("arMeanStartUB must not be smaller than arMeanStartLB")
-  }
-  
-  if(conditions$arMeanTrendLB > conditions$arMeanTrendUB) {
-    stop("arMeanTrendUB must not be smaller than arMeanTrendLB")
-  }
-  
-  if(conditions$arMeanStartLB < conditions$arMeanTrendLB) {
-    stop("arMeanStartLB must not be smaller than arMeanTrendLB")
-  }
-  
-  if(conditions$arMeanStartUB > conditions$arMeanTrendUB) {
-    stop("arMeanStartUB must not be greater than arMeanTrendUB")
-  }
+
   stopifnot(!anyNA(conditions[, get_required_conditions_names()]),
             is.numeric(conditions$nRespondents),
             all(conditions$nRespondents > 0),
@@ -112,10 +97,14 @@ check_conditions <- function(conditions) {
                          function(x) sum(eval(str2expression(x)))) == 1),
             is.numeric(conditions$arMeanStartLB),
             is.numeric(conditions$arMeanStartUB),
+            "`arMeanStartUB` must be greater than `arMeanStartLB`" =
+              all(conditions$arMeanStartUB > conditions$arMeanStartLB),
             is.numeric(conditions$arMeanChangeSD),
             all(conditions$arMeanChangeSD >= 0),
             is.numeric(conditions$arMeanTrendLB),
             is.numeric(conditions$arMeanTrendUB),
+            "`arMeanTrendUB` must greater than ``arMeanTrendLB" =
+              all(conditions$arMeanTrendUB > conditions$arMeanTrendLB),
             is.numeric(conditions$arVarStartLB),
             is.numeric(conditions$arVarStartUB),
             is.numeric(conditions$arVarChangeSD),

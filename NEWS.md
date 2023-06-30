@@ -1,3 +1,11 @@
+# cntYearTrends 0.3.0 (30.06.2023)
+
+## Changes
+
+-   Switched to sampling country-year means in the first period from a uniform distribution. API changed accordingly.
+-   API for defining bounds for countr-year means changed to two separate parameters.
+-   Changed the `conditions` dataset and example in `prepare_conditions()` that generates it.
+
 # cntYearTrends 0.2.2 (29.06.2023)
 
 ## New features

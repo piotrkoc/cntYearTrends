@@ -12,8 +12,11 @@ generate_data(
   projectBiasesSD,
   nItemsProbs,
   respScaleLengthProbs,
-  arMeanStartSD,
+  arMeanStartLB,
+  arMeanStartUB,
   arMeanChangeSD,
+  arMeanTrendLB,
+  arMeanTrendUB,
   arVarStartLB,
   arVarStartUB,
   arVarChangeSD,
@@ -23,8 +26,7 @@ generate_data(
   unstLoadingsYSD,
   difficultyCSD,
   difficultyYSD,
-  relThresholdsL,
-  arMeanBounds
+  relThresholdsL
 )
 }
 \arguments{
@@ -45,9 +47,15 @@ generated for each group of countries (compare \link{check_coverage_scheme})}
 
 \item{respScaleLengthProbs}{a string - see \link{prepare_conditions}}
 
-\item{arMeanStartSD}{a numeric - see \link{prepare_conditions}}
+\item{arMeanStartLB}{a numeric - see \link{prepare_conditions}}
+
+\item{arMeanStartUB}{a numeric - see \link{prepare_conditions}}
 
 \item{arMeanChangeSD}{a numeric - see \link{prepare_conditions}}
+
+\item{arMeanTrendLB}{a numeric - see \link{prepare_conditions}}
+
+\item{arMeanTrendUB}{a numeric - see \link{prepare_conditions}}
 
 \item{arVarStartLB}{a numeric - see \link{prepare_conditions}}
 
@@ -68,8 +76,6 @@ generated for each group of countries (compare \link{check_coverage_scheme})}
 \item{difficultyYSD}{a numeric - see \link{prepare_conditions}}
 
 \item{relThresholdsL}{a numeric - see \link{prepare_conditions}}
-
-\item{arMeanBounds}{a string - see \link{prepare_conditions}}
 }
 \value{
 a list of four data frames:

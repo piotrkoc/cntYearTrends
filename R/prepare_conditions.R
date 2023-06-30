@@ -18,10 +18,13 @@
 #' }
 #' \strong{Country-means and SDs autoregressive process parameters}
 #' \describe{
-#'   \item{arMeanStartSD}{ (a number) - std. dev. of country means in the first year}
+#'   \item{arMeanStartLB}{ (a number) - lower bound of a uniform distribution from which country means in the first year are drawn}
+#'   \item{arMeanStartUB}{ (a number) - lower bound of a uniform distribution from which country means in the first year are drawn}
 #'   \item{arMeanChangeSD}{ (a number) - std. dev. of change of country means relatively to the previous year}
-#'   \item{arVarStartLB}{ (a number) - a lower bound of a uniform distrib. (of within-countries std. devs. in the first year)}
-#'   \item{arVarStartUB}{ (a number) - an upper bound of a uniform distrib. (of within-countries std. devs. in the first year)}
+#'   \item{arMeanTrendLB}{ (a number) - the lower bound for the mean trend}
+#'   \item{arMeanTrendUB}{ (a number) - the upper bound for the mean trend}
+#'   \item{arVarStartLB}{ (a number) - the lower bound of a uniform distrib. (of within-countries std. devs. in the first year)}
+#'   \item{arVarStartUB}{ (a number) - the upper bound of a uniform distrib. (of within-countries std. devs. in the first year)}
 #'   \item{arVarChangeSD}{ (a number) - std. dev. of a multiplicative change of within-country SD relatively to the previous year (this is parameter of a log-normal distrib.)}
 #' }
 #' \strong{Default item parameters}
@@ -52,8 +55,8 @@
 #'   nItemsProbs = "c(`1` = 0.3, `2` = 0.4, `3` = 0.3)", # number of items in a project
 #'   respScaleLengthProbs = "c( `2` = 0.1, `4` = 0.2, `5` = 0.3, `7` = 0.3, `10` = 0.1)",
 #'   # country-means and SDs autoregressive process parameters #####################
-#'   arMeanStartLB = -0.5, # the lower bound for the initial means of each country drawn from a uniform distribution.
-#'   arMeanStartUB = 0.5, # the upper bound for the initial means of each country drawn from a uniform distribution.
+#'   arMeanStartLB = -0.5, # the lower bound for the initial means of each country
+#'   arMeanStartUB = 0.5, # the upper bound for the initial means of each country
 #'   arMeanChangeSD = 0.3, # SD of change of country means relatively to the previous year
 #'   arMeanTrendLB = -1, # the lower bound for the mean trend.
 #'   arMeanTrendUB = 1, # the upper bound for the mean trend.

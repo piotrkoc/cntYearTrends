@@ -60,6 +60,6 @@ See \link{run_iteration}
 str(conditions)
 str(coverageScheme)
 set.seed(12345)
-run_simulation(conditions[1:2, ], coverageScheme, nIterPerCond = 1L)
+run_simulation(conditions[1:2, ], coverageScheme, nIterPerCond = 1L, iter = 100L)
 }
 }
