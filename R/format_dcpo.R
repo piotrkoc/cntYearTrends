@@ -23,7 +23,8 @@ format_dcpo <- function(responses) {
     dplyr::mutate(kk = factor(.data$country, levels = unique(.data$country)),
                   tt = .data$year - min(.data$year) + 1,
                   qq = factor(.data$item, levels = unique(.data$item)),
-                  rr = .data$r - 1,
+                  rr = .data$r,
+                  r = .data$r + 1,
                   question = .data$item,
                   item = paste(.data$question, .data$r, "or higher")) %>%
     dplyr::group_by(.data$country, .data$year, .data$question) %>%
