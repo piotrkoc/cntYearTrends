@@ -40,7 +40,7 @@ aggregate_data <- function(responses,
     countries <- stats::aggregate(data.frame(cc_rank = rep(1L, nrow(responses))),
                                   responses[, "country", drop = FALSE],
                                   sum)
-    responses <- merge(responses, countries, by = "country")
+    responses <- dplyr::inner_join(responses, countries, by = "country")
     responses <- responses[order(responses$country, responses$year,
                                  responses$survey, responses$Item,
                                  responses$r),

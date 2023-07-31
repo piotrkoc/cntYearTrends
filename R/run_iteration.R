@@ -37,22 +37,22 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
   dcpo <- estimate_dcpo(data$responses, models$dcpo, iter = iter,
                         pars = stanPars)
   if (!is.null(dcpo$countryMeans)) {
-    countryMeans <- merge(countryMeans, dcpo$countryMeans,
-                          by = c("country", "year"), all.x = TRUE)
+    countryMeans <- dplyr::left_join(countryMeans, dcpo$countryMeans,
+                                     by = c("country", "year"))
   }
   claassen <- estimate_claassen(data$responses, models$claassen,
                                 variant = "dichotomous", iter = iter,
                                 pars = stanPars)
   if (!is.null(claassen$countryMeans)) {
-    countryMeans <- merge(countryMeans, claassen$countryMeans,
-                          by = c("country", "year"), all.x = TRUE)
+    countryMeans <- dplyr::left_join(countryMeans, claassen$countryMeans,
+                                     by = c("country", "year"))
   }
   claassenMulti <- estimate_claassen(data$responses, models$claassen,
                                      variant = "multinomial", iter = iter,
                                      pars = stanPars)
   if (!is.null(claassenMulti$countryMeans)) {
-    countryMeans <- merge(countryMeans, claassenMulti$countryMeans,
-                          by = c("country", "year"), all.x = TRUE)
+    countryMeans <- dplyr::left_join(countryMeans, claassenMulti$countryMeans,
+                                     by = c("country", "year"))
   }
 
   return(list(modelSummaries = rbind(dcpo$modelSummary,

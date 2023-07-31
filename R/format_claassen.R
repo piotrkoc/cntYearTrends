@@ -42,7 +42,7 @@ format_claassen <- function(responses,
                       Yr = responses$Year)
   r.map <- data.frame(Est = seq_len(sum(len_theta_ts)), Cntry = cntrys.r,
                       Yr = year.r)
-  n.r.merg <- merge(n.map, r.map, by = c("Cntry", "Yr"), all.x = TRUE)
+  n.r.merg <- dplyr::left_join(n.map, r.map, by = c("Cntry", "Yr"))
   n.r.merg <- n.r.merg[order(n.r.merg$Obs), ]
 
   return(list(dat.1 = list(N = nrow(responses),

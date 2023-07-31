@@ -1,3 +1,13 @@
+# cntYearTrends 0.3.1 (31.07.2023)
+
+## Bug fixes
+
+-   Changed the way columns *r* and *rr* are created in `format_dcpo()` to take into account, that values of response categories in the generated data starts from 0, while they are assumed to start from 1 in Solt's code.
+
+## Changes
+
+-   Switched to *dplyr* joins instead of `merge()` for merging data tables to increase speed and decrease memory footproint.
+
 # cntYearTrends 0.3.0 (30.06.2023)
 
 ## Changes

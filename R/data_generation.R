@@ -172,8 +172,8 @@ generate_items <- function(pCY,
                         -difficultyYL, difficultyYL)
   itemYears$difficultyYBias[itemYears$year == 1] = 0
 
-  pCY <- merge(pCY, countries, by = "country")
-  pCY <- merge(pCY, itemYears, by = c("project", "year", "respScaleLength"))
+  pCY <- dplyr::inner_join(pCY, countries, by = "country")
+  pCY <- dplyr::inner_join(pCY, itemYears, by = c("project", "year", "respScaleLength"))
 
   pCY$unstLoading <- pCY$unstLoading + pCY$unstLoadingCBias + pCY$unstLoadingYBias
   pCY$difficulty <- pCY$difficulty + pCY$difficultyCBias + pCY$difficultyYBias
@@ -190,8 +190,9 @@ generate_items <- function(pCY,
 #' `respScaleLength`, `respondent` and `response`
 #' @seealso [generate_data]
 generate_responses <- function(latent, items) {
-  respItems <- merge(latent, items,
-                     by = c("project", "country", "year"))
+  respItems <- dplyr::inner_join(latent, items,
+                                 by = c("project", "country", "year"),
+                                 relationship = "many-to-many")
   respItems$latentResponse <- respItems$latent * respItems$unstLoading +
     stats::rnorm(nrow(respItems), mean = 0, sd = 1)
   respItems$response <-
@@ -281,12 +282,12 @@ generate_data <- function(pCGY,
                                      arVarStartUB = arVarStartUB,
                                      arVarChangeSD = arVarChangeSD)
 
-  projectCountryYears <- merge(projectCountryYears,
-                               projects,
-                               by = "project")
-  projectCountryYears <- merge(projectCountryYears,
-                               countryYears,
-                               by = c("country", "year"))
+  projectCountryYears <- dplyr::inner_join(projectCountryYears,
+                                           projects,
+                                           by = "project")
+  projectCountryYears <- dplyr::inner_join(projectCountryYears,
+                                           countryYears,
+                                           by = c("country", "year"))
   latent <- generate_latent(pCY = projectCountryYears,
                             nRespondents = nRespondents)
   items <- generate_items(pCY = projectCountryYears,
