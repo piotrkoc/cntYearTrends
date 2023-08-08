@@ -77,8 +77,6 @@ run_simulation <- function(conditions, coverageScheme, nIterPerCond,
                                             cbind(i = i,
                                                   j = j,
                                                   resultsIter$itemDistributions))
-      rm("responses")
-      gc()
       save(conditions, modelSummaries, countryMeans, items, itemDistributions,
            file = paste0("cntYearTrends_results", suffix, ".RData"))
     }

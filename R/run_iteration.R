@@ -62,4 +62,6 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
               items = data$items,
               itemDistributions = aggregate_data(data$responses,
                                                  variant = "distributions")))
+  rm(responses)
+  gc()
 }
