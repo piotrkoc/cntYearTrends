@@ -6,7 +6,7 @@ data{
   int<lower=1> N;                     // number of KTQR observations
   array [N] int<lower=1, upper=K> kk;        // country k for opinion n
   array [N] int<lower=1, upper=T> tt;        // year t for opinion n
-  array [N ]int<lower=1, upper=Q> qq;        // question q for opinion n
+  array [N] int<lower=1, upper=Q> qq;        // question q for opinion n
   array [N] int<lower=1, upper=R> rr;        // response cutpoint r for opinion n
   array [N] int<lower=1> y_r;                // vector of survey responses, cumulative count
   array [N] int<lower=1> n_r;                // vector of sample sizes
