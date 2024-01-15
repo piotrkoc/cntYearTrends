@@ -4,13 +4,13 @@ data{
   int<lower=1> Q;                     // number of questions
   int<lower=1> R;                     // maximum number of response cutpoints
   int<lower=1> N;                     // number of KTQR observations
-  int<lower=1, upper=K> kk[N];        // country k for opinion n
-  int<lower=1, upper=T> tt[N];        // year t for opinion n
-  int<lower=1, upper=Q> qq[N];        // question q for opinion n
-  int<lower=1, upper=R> rr[N];        // response cutpoint r for opinion n
-  int<lower=1> y_r[N];                // vector of survey responses, cumulative count
-  int<lower=1> n_r[N];                // vector of sample sizes
-  int fixed_cutp[Q, R];               // indicates single category with difficulty fixed to .5
+  array [N] int<lower=1, upper=K> kk;        // country k for opinion n
+  array [N] int<lower=1, upper=T> tt;        // year t for opinion n
+  array [N ]int<lower=1, upper=Q> qq;        // question q for opinion n
+  array [N] int<lower=1, upper=R> rr;        // response cutpoint r for opinion n
+  array [N] int<lower=1> y_r;                // vector of survey responses, cumulative count
+  array [N] int<lower=1> n_r;                // vector of sample sizes
+  array [Q,R] int fixed_cutp;               // indicates single category with difficulty fixed to .5
   vector<lower=0, upper=1>[K] use_delta[Q]; // indicates multiple years observed of question q in country k
 }
 
