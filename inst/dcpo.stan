@@ -34,7 +34,7 @@ transformed parameters{
   vector[N] beta_rr_qq;               // N-vector for question-response difficulty component
   array [Q] vector[K] raw_delta;             // question-country difficulty component, std normal prior
   vector[Q] mean_raw_delta;           // mean question-country difficulty component, std normal prior, by question
-  vector[K] delta[Q];                 // question-country difficulty component, mean centered by question
+  array [Q] vector[K] delta;                 // question-country difficulty component, mean centered by question
   vector[N] delta_qq_kk;              // N-vector for question-country difficulty component values
   array [T] row_vector[K] raw_theta; 	      // public opinion, after transition model
   array [T] row_vector[K] theta; 	          // public opinion, after transition model, on [0, 1] scale
