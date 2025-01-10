@@ -135,19 +135,31 @@ generate_items <- function(pCY,
                  c("project", "item", "respScaleLength")]
   items$unstLoading <- unstLoadingDefault
   items$difficulty <- difficultyDefault
-  items$relThresholds <-
-    t(sapply(items$respScaleLength,
-             function(nCat, relThresholdsL, maxNCat) {
-               relThresholds <- sort(stats::runif(nCat - 1L,
-                                                  -relThresholdsL,
-                                                  relThresholdsL))
-               relThresholds <- relThresholds - mean(relThresholds)
-               relThresholds <- c(relThresholds,
-                                  rep(NA_real_, maxNCat - nCat))
-               return(relThresholds)
-             },
-             relThresholdsL = relThresholdsL,
-             maxNCat = max(items$respScaleLength)))
+#  items$relThresholds <-
+#    t(sapply(items$respScaleLength,
+#             function(nCat, relThresholdsL, maxNCat) {
+#               relThresholds <- sort(stats::runif(nCat - 1L,
+#                                                  -relThresholdsL,
+#                                                  relThresholdsL))
+#               relThresholds <- relThresholds - mean(relThresholds)
+#               relThresholds <- c(relThresholds,
+#                                  rep(NA_real_, maxNCat - nCat))
+#               return(relThresholds)
+#             },
+#             relThresholdsL = relThresholdsL,
+#             maxNCat = max(items$respScaleLength)))
+   items$relThresholds <- t(sapply(items$respScaleLength, function(nCat, maxNCat) {
+    if (nCat == 1) {
+      return(rep(NA_real_, maxNCat))
+    }
+    diffs <- runif(nCat - 1, min = 0.5, max = 1)
+    relThresholds <- cumsum(diffs)
+    relThresholds <- relThresholds - mean(relThresholds)
+    relThresholds <- relThresholds + rnorm(1, 0, 1)
+    relThresholds <- c(relThresholds, rep(NA_real_, maxNCat - nCat))
+
+    return(relThresholds)
+  }, maxNCat = max(items$respScaleLength)))
 
   countries <- unique(pCY[, c("country"), drop = FALSE])
   countries$unstLoadingCBias <-
