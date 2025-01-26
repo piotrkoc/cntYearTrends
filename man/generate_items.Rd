@@ -7,7 +7,10 @@
 generate_items(
   pCY,
   unstLoadingDefault,
-  difficultyDefault,
+  difficultyMean,
+  difficultySD,
+  difficultyLB,
+  difficultyUB,
   unstLoadingsCSD,
   unstLoadingsYSD,
   difficultyCSD,
@@ -25,7 +28,13 @@ generate_items(
 
 \item{unstLoadingDefault}{a numeric - see \link{prepare_conditions}}
 
-\item{difficultyDefault}{a numeric - see \link{prepare_conditions}}
+\item{difficultyMean}{a numeric - see \link{prepare_conditions}}
+
+\item{difficultySD}{a numeric - see \link{prepare_conditions}}
+
+\item{difficultyLB}{a numeric - see \link{prepare_conditions}}
+
+\item{difficultyUB}{a numeric - see \link{prepare_conditions}}
 
 \item{unstLoadingsCSD}{a numeric - see \link{prepare_conditions}}
 
