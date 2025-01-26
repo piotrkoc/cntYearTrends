@@ -27,10 +27,12 @@ passed to the Stan models' \code{sample} method - see \link{estimate_dcpo} and
 a list of three data frames:
 \describe{
 \item{modelSummaries}{basic model summary statistics in a \emph{long} format}
-\item{countryMeans}{generated country-year means (as returned by
-\link{generate_data}, i.e. not standardized) and their
-estimates from the models (standardized within the
-group of observed country-means)}
+\item{countryMeans}{generated country-year means (both as returned by
+\link{generate_data}, i.e. not standardized, and
+standardized within the group of observed country-means
+- the latter with suffix \emph{Std} added to their names)
+and their estimates from the models (standardized
+within the group of observed country-means)}
 \item{items}{item parameters (generated, not estimated)}
 }
 }

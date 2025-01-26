@@ -8,13 +8,10 @@ summarize_claassen_results <- function(input, output) {
   stopifnot(inherits(output, "CmdStanFit"))
 
   thetaOut <- apply(output$draws("theta"), "variable", as.vector)
-  thetaMean = mean(thetaOut)
-  thetaSD = stats::sd(thetaOut)
-  thetaStd <- (thetaOut - thetaMean) / thetaSD # standardize
-  thetaPE <- apply(thetaStd, "variable", mean)
-  thetaU95 <- apply(thetaStd, "variable", stats::quantile, probs = c(0.975))
-  thetaL95 <- apply(thetaStd, "variable", stats::quantile, probs = c(0.025))
-  thetaSD <- apply(thetaStd, "variable", stats::sd)
+  thetaPE <- apply(thetaOut, "variable", mean)
+  thetaU95 <- apply(thetaOut, "variable", stats::quantile, probs = c(0.975))
+  thetaL95 <- apply(thetaOut, "variable", stats::quantile, probs = c(0.025))
+  thetaSD <- apply(thetaOut, "variable", stats::sd)
 
   return(data.frame(country = input$cnt.names[input$r.map$Cntry],
                     year = as.integer(input$r.map$Yr),

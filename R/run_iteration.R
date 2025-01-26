@@ -17,10 +17,12 @@
 #' @returns a list of three data frames:
 #' \describe{
 #'   \item{modelSummaries}{basic model summary statistics in a *long* format}
-#'   \item{countryMeans}{generated country-year means (as returned by
-#'                       [generate_data], i.e. not standardized) and their
-#'                       estimates from the models (standardized within the
-#'                       group of observed country-means)}
+#'   \item{countryMeans}{generated country-year means (both as returned by
+#'                       [generate_data], i.e. not standardized, and
+#'                       standardized within the group of observed country-means
+#'                       - the latter with suffix *Std* added to their names)
+#'                       and their estimates from the models (standardized
+#'                       within the group of observed country-means)}
 #'   \item{items}{item parameters (generated, not estimated)}
 #' }
 run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
@@ -33,12 +35,20 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
   condition <- as.list(condition)
   data <- do.call(generate_data, c(pCGY = list(coverageScheme), condition))
   countryMeans <- data$countryYears
+  countryMeans$meanStd <-
+    (countryMeans$mean - mean(countryMeans$mean)) / stats::sd(countryMeans$mean)
+  countryMeans$varStd <- countryMeans$var / stats::var(countryMeans$mean)
 
   dcpo <- estimate_dcpo(data$responses, models$dcpo, iter = iter,
                         pars = stanPars)
   if (!is.null(dcpo$countryMeans)) {
     countryMeans <- dplyr::left_join(countryMeans, dcpo$countryMeans,
                                      by = c("country", "year"))
+    meanToStd <- mean(countryMeans$mean_dcpo)
+    sDToStd <- stats::sd(countryMeans$mean_dcpo)
+    countryMeans <- dplyr::mutate(countryMeans,
+                                  dplyr::across(dplyr::ends_with("_dcpo"),
+                                                ~(. - meanToStd) / sDToStd))
   }
   claassen <- estimate_claassen(data$responses, models$claassen,
                                 variant = "dichotomous", iter = iter,
@@ -46,6 +56,11 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
   if (!is.null(claassen$countryMeans)) {
     countryMeans <- dplyr::left_join(countryMeans, claassen$countryMeans,
                                      by = c("country", "year"))
+    meanToStd <- mean(countryMeans$mean_claassen)
+    sDToStd <- stats::sd(countryMeans$mean_claassen)
+    countryMeans <- dplyr::mutate(countryMeans,
+                                  dplyr::across(dplyr::ends_with("_claassen"),
+                                                ~(. - meanToStd) / sDToStd))
   }
   claassenMulti <- estimate_claassen(data$responses, models$claassen,
                                      variant = "multinomial", iter = iter,
@@ -53,6 +68,11 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
   if (!is.null(claassenMulti$countryMeans)) {
     countryMeans <- dplyr::left_join(countryMeans, claassenMulti$countryMeans,
                                      by = c("country", "year"))
+    meanToStd <- mean(countryMeans$mean_claassenMulti)
+    sDToStd <- stats::sd(countryMeans$mean_claassenMulti)
+    countryMeans <- dplyr::mutate(countryMeans,
+                                  dplyr::across(dplyr::ends_with("_claassenMulti"),
+                                                ~(. - meanToStd) / sDToStd))
   }
 
   return(list(modelSummaries = rbind(dcpo$modelSummary,
@@ -62,6 +82,4 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
               items = data$items,
               itemDistributions = aggregate_data(data$responses,
                                                  variant = "distributions")))
-  rm(responses)
-  gc()
 }
