@@ -5,6 +5,7 @@
 -   Changed the way the item thresholds are generated, to get more plausible distributions of item responses. Now:
     -   Item (in fact project-item) difficulties are generated from the truncated-normal distribution with parameters set using new arguments `difficultyMean`, `difficultySD`, `difficultyLB`, `difficultyUB` defined in the `conditions` data frame.
     -   Item thresholds are generated to have average of the previously generated item difficulty and distances between consecutive thresholds sampled from the distribution uniform on [0.3, 1].
+-   Changed the value of `difficultyYSD` in the `conditions` data set to 0.1 (from 0.2).
 
 # cntYearTrends 0.3.1 (31.07.2023)
 
