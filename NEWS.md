@@ -1,5 +1,9 @@
 # cntYearTrends 0.4.0 (26.01.2025)
 
+## New features
+
+-   Function `bind_results()` enabling to bind simulation results saved in different .RData files into a one set of data frames (and possibly saving them in one .RData file).
+
 ## Changes
 
 -   Changed the way the item thresholds are generated, to get more plausible distributions of item responses. Now:
