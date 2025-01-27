@@ -30,15 +30,17 @@
 #' \strong{Default item parameters}
 #' \describe{
 #'   \item{unstLoadingDefault}{ (a number) - unstandardized loading}
-#'   \item{difficultyDefault}{ (a number) - mean of the thresholds}
-#'   \item{relThresholdsL}{ (a number) - +- this will be set as limits of the uniform distrib.}
+#'   \item{difficultyMean}{ (a number) - expected value of the trunc.-normal distribution of the project-items difficulties}
+#'   \item{difficultySD}{ (a number) - standard deviation of the trunc.-normal distribution of the project-items difficulties}
+#'   \item{difficultyLB}{ (a number) - lower bound of the trunc.-normal distribution of the project-items difficulties}
+#'   \item{difficultyUB}{ (a number) - upper bound of the trunc.-normal distribution of the project-items difficulties}
 #' }
 #' \strong{Non-invariance parameters}
 #' \describe{
 #'   \item{unstLoadingsCSD}{ (a number) - between-countries non-invariance effect std. dev.}
-#'   \item{unstLoadingsYSD}{ (a number) - temporal non-invariance effect std. dev.}
+#'   \item{unstLoadingsYSD}{ (a number) - temporal non-invariance effect std. dev. (at the year-project-item level)}
 #'   \item{difficultyCSD}{ (a number) - between-countries non-invariance effect std. dev.}
-#'   \item{difficultyYSD}{ (a number) - temporal non-invariance effect std. dev.}
+#'   \item{difficultyYSD}{ (a number) - temporal non-invariance effect std. dev. (at the year-project-item level)}
 #' }
 #' \strong{Parameters describing the projects' coverage}
 #' \describe{
@@ -69,7 +71,10 @@
 #'   # default item parameters
 #'   unstLoadingDefault = 0.75,
 #'   difficultyDefault = 0, # mean of thresholds
-#'   relThresholdsL = 0.5 # +- this will be set as limits of the uniform distrib.
+#'   difficultyMean = 0, # average of the trunc.-norm. distrib. of the project-items difficulties
+#'   difficultySD = 0.5, # std. dev. of the trunc.-norm. distrib. of the project-items diffic.
+#'   difficultyLB = -0.5, # lower bound of the trunc.-norm. distrib. of the project-items diffic.
+#'   difficultyUB = 0.5 # upper bound of the trunc.-norm. distrib. of the project-items diffic.
 #' )
 #' (invariance = rbind(
 #'   "full metric + small thresholds var." = data.frame(

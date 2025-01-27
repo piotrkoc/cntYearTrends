@@ -1,3 +1,17 @@
+# cntYearTrends 0.4.0 (26.01.2025)
+
+## New features
+
+-   Function `bind_results()` enabling to bind simulation results saved in different .RData files into a one set of data frames (and possibly saving them in one .RData file).
+
+## Changes
+
+-   Changed the way the item thresholds are generated, to get more plausible distributions of item responses. Now:
+    -   Item (in fact project-item) difficulties are generated from the truncated-normal distribution with parameters set using new arguments `difficultyMean`, `difficultySD`, `difficultyLB`, `difficultyUB` defined in the `conditions` data frame.
+    -   Item thresholds are generated to have average of the previously generated item difficulty and distances between consecutive thresholds sampled from the distribution uniform on [0.3, 1].
+-   Changed the value of `difficultyYSD` in the `conditions` data set to 0.1 (from 0.2).
+-   Standardization of the estimated results was moved from `summarize_dcpo_results()` and `summarize_claassen_results()` to `run_iteration()` so it is performed considering only the set of actually observed country-years. Consequently, columns `meanStd` and `varSdt` were added to the results returned by the `run_iteration()`, which contain analogously standardized values from the data-generating model - to be compared with the estimated ones
+
 # cntYearTrends 0.3.1 (31.07.2023)
 
 ## Bug fixes

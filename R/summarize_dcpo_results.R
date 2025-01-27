@@ -19,13 +19,10 @@ summarize_dcpo_results <- function(input, output) {
 
   variableNames <- dimnames(output$draws("raw_theta"))$variable
   thetaOut <- apply(output$draws("raw_theta"), "variable", as.vector)
-  thetaMean <- mean(thetaOut)
-  thetaSD <- stats::sd(thetaOut)
-  thetaStd <- (thetaOut - thetaMean) / thetaSD # standardize
-  thetaPE <- apply(thetaStd, "variable", mean)
-  thetaU95 <- apply(thetaStd, "variable", stats::quantile, probs = c(0.975))
-  thetaL95 <- apply(thetaStd, "variable", stats::quantile, probs = c(0.025))
-  thetaSD <- apply(thetaStd, "variable", stats::sd)
+  thetaPE <- apply(thetaOut, "variable", mean)
+  thetaU95 <- apply(thetaOut, "variable", stats::quantile, probs = c(0.975))
+  thetaL95 <- apply(thetaOut, "variable", stats::quantile, probs = c(0.025))
+  thetaSD <- apply(thetaOut, "variable", stats::sd)
 
   data.frame(variable = variableNames,
              q05 = thetaL95, q95 = thetaU95,
