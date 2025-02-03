@@ -14,15 +14,15 @@ data{
   int<lower=1> K;  	        		// number of items
   int<lower=1> P;  	        		// number of items-country combinations  
   int<lower=1> R;  	        		// number of national opinion estimates
-  int<lower=1,upper=J> jj[N];   	// country j for opinion n
-  int<lower=1,upper=K> kk[N];   	// item k for opinion n
-  int<lower=1,upper=P> pp[N];   	// item-country p for opinion n
-  int<lower=1,upper=R> rr[N];   	// estimate r for opinion n
-  int<lower=1> x[N];   			    // vector of survey responses, count
-  int<lower=1> samp[N];				// vector of sample sizes
-  int<lower=1> it_len[K];			// number of countries for each item
-  int<lower=1> est_pos[J];			// indicator showing cntry start for estimate vector	
-  int<lower=1> len_theta_ts[J];		// indicator showing length of each cntry estimated time series
+  array [N] int<lower=1,upper=J> jj;   	// country j for opinion n
+  array [N] int<lower=1,upper=K> kk;   	// item k for opinion n
+  array [N] int<lower=1,upper=P> pp;   	// item-country p for opinion n
+  array [N] int<lower=1,upper=R> rr;   	// estimate r for opinion n
+  array [N] int<lower=1> x;   			    // vector of survey responses, count
+  array [N] int<lower=1> samp;				// vector of sample sizes
+  array [K] int<lower=1> it_len;			// number of countries for each item
+  array [J] int<lower=1> est_pos;			// indicator showing cntry start for estimate vector	
+  array [J] int<lower=1> len_theta_ts;		// indicator showing length of each cntry estimated time series
   real mn_resp_log;				    // observed response mean proportion on logit scale
 }
 
