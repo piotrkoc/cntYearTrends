@@ -13,7 +13,7 @@
 #'   \item{countryMeans}{a data frame with country-year means estimates}
 #' }
 #' @export
-estimate_dcpo <- function(responses, model, iter = 1000L,
+estimate_dcpo <- function(responses, model, iter = 2000L,
                           pars = list(max_treedepth = 14,
                                       adapt_delta = 0.99,
                                       step_size = 0.005,
