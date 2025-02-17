@@ -17,7 +17,7 @@
 #' @export
 estimate_claassen <- function(responses, model,
                               variant = c("dichotomous", "multinomial"),
-                              iter = 1000L,
+                              iter = 2000L,
                               pars = list(max_treedepth = 14,
                                           adapt_delta = 0.99,
                                           step_size = 0.005,
