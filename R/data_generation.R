@@ -147,7 +147,7 @@ generate_items <- function(pCY,
                if (nCat == 2) {
                  return(c(0, rep(NA_real_, maxNCat - 2)))
                }
-               relThresholds <- cumsum(stats::runif(nCat - 1, min = 0.3, max = 1))
+               relThresholds <- cumsum(stats::runif(nCat - 1, min = 0.3, max = 0.8))
                relThresholds <- relThresholds - mean(relThresholds)
                relThresholds <- c(relThresholds,
                                   rep(NA_real_, maxNCat - nCat))
