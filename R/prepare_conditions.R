@@ -30,10 +30,12 @@
 #' \strong{Default item parameters}
 #' \describe{
 #'   \item{unstLoadingDefault}{ (a number) - unstandardized loading}
-#'   \item{difficultyMean}{ (a number) - expected value of the trunc.-normal distribution of the project-items difficulties}
-#'   \item{difficultySD}{ (a number) - standard deviation of the trunc.-normal distribution of the project-items difficulties}
-#'   \item{difficultyLB}{ (a number) - lower bound of the trunc.-normal distribution of the project-items difficulties}
-#'   \item{difficultyUB}{ (a number) - upper bound of the trunc.-normal distribution of the project-items difficulties}
+#'   \item{difficultyMean}{ (a number or NA) - if non-NA: expected value of the trunc.-normal distribution of the project-items difficulties; if set to `NA_real_` project-items difficulties will be computed given sampled values of their thresholds - see parameters below}
+#'   \item{difficultySD}{ (a number or NA) - if non-NA: standard deviation of the trunc.-normal distribution of the project-items difficulties; if set to `NA_real_` project-items difficulties will be computed given sampled values of their thresholds - see parameters below}
+#'   \item{difficultyLB}{ (a number) - lower bound of either 1) trunc.-normal distribution of the project-items difficulties or 2) uniform distribution of the project-items first threshold (if `difficultyMean` and `difficultySD` set to `NA_real_`)}
+#'   \item{difficultyUB}{ (a number) - upper bound of either 1) trunc.-normal distribution of the project-items difficulties or 2) uniform distribution of the project-items first threshold (if `difficultyMean` and `difficultySD` set to `NA_real_`)}
+#'   \item{thresholdsIncrLB}{ (a number) - lower bound of the uniform distribution of the project-items threshold increments}
+#'   \item{thresholdsIncrUB}{ (a number) - upper bound of the uniform distribution of the project-items threshold increments}
 #' }
 #' \strong{Non-invariance parameters}
 #' \describe{
@@ -71,10 +73,14 @@
 #'   # default item parameters
 #'   unstLoadingDefault = 0.75,
 #'   difficultyDefault = 0, # mean of thresholds
-#'   difficultyMean = 0, # average of the trunc.-norm. distrib. of the project-items difficulties
-#'   difficultySD = 0.5, # std. dev. of the trunc.-norm. distrib. of the project-items diffic.
-#'   difficultyLB = -0.5, # lower bound of the trunc.-norm. distrib. of the project-items diffic.
-#'   difficultyUB = 0.5 # upper bound of the trunc.-norm. distrib. of the project-items diffic.
+#'   difficultyMean = NA_real_, # use uniform distrib. to draw project-items difficulties
+#'   difficultySD = NA_real_, # use uniform distrib. to draw project-items difficulties
+#'   difficultyLB = -1, # lower bound of the uniform distrib. of the project-items first threshold
+#'   difficultyUB = 0, # upper bound of the uniform distrib. of the project-items first threshold
+#'   thresholdsIncrLB = 0.3, # lower bound of the uniform distrib.
+#'                           # of the project-items threshold increments
+#'   thresholdsIncrUB = 1 # upper bound of the uniform distrib.
+#'                        # of the project-items threshold increments
 #' )
 #' (invariance = rbind(
 #'   "full metric + small thresholds var." = data.frame(

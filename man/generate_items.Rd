@@ -11,6 +11,8 @@ generate_items(
   difficultySD,
   difficultyLB,
   difficultyUB,
+  thresholdsIncrLB,
+  thresholdsIncrUB,
   unstLoadingsCSD,
   unstLoadingsYSD,
   difficultyCSD,
@@ -35,6 +37,10 @@ generate_items(
 \item{difficultyLB}{a numeric - see \link{prepare_conditions}}
 
 \item{difficultyUB}{a numeric - see \link{prepare_conditions}}
+
+\item{thresholdsIncrLB}{a numeric - see \link{prepare_conditions}}
+
+\item{thresholdsIncrUB}{a numeric - see \link{prepare_conditions}}
 
 \item{unstLoadingsCSD}{a numeric - see \link{prepare_conditions}}
 

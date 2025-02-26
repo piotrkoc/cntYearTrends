@@ -1,19 +1,26 @@
 #' @title Preparing simulation conditions
 #' @description
 #' Returns names of parameters required to specify a simulation condition.
+#' @param nonNA a logical value - if `TRUE` returns only names of parameters
+#' which values cannot be set to missing values
 #' @returns a character vector
 #' @seealso [check_conditions_names], [check_conditions]
 #' @export
-get_required_conditions_names <- function() {
-  return(c("nRespondents", "projectBiasesSD", "nItemsProbs",
-           "respScaleLengthProbs", "arMeanStartLB", "arMeanStartUB", "arMeanChangeSD",
-           "arMeanTrendLB", "arMeanTrendUB",
-           "arVarStartLB", "arVarStartUB", "arVarChangeSD",
-           "unstLoadingDefault",
-           "difficultyMean", "difficultySD", "difficultyLB", "difficultyUB",
-           "unstLoadingsCSD", "unstLoadingsYSD",
-           "difficultyCSD", "difficultyYSD",
-           "variant", "nCountriesPerGroup"))
+get_required_conditions_names <- function(nonNA = FALSE) {
+  stopifnot(is.logical(nonNA), length(nonNA) == 1, !anyNA(nonNA))
+  reqNames <- c("nRespondents", "projectBiasesSD", "nItemsProbs",
+                "respScaleLengthProbs",
+                "arMeanStartLB", "arMeanStartUB", "arMeanChangeSD",
+                "arMeanTrendLB", "arMeanTrendUB",
+                "arVarStartLB", "arVarStartUB", "arVarChangeSD",
+                "unstLoadingDefault",
+                "difficultyMean", "difficultySD", "difficultyLB", "difficultyUB",
+                "thresholdsIncrLB", "thresholdsIncrUB",
+                "unstLoadingsCSD", "unstLoadingsYSD",
+                "difficultyCSD", "difficultyYSD",
+                "variant", "nCountriesPerGroup")
+  if (nonNA) reqNames <- setdiff(reqNames, c("difficultyMean", "difficultySD"))
+  return(reqNames)
 }
 #' @title Preparing simulation conditions
 #' @description
@@ -74,12 +81,14 @@ check_conditions <- function(conditions) {
                 "These expressions either don't evaluate to numeric vectors or don't evaluate at all."))
   }
 
-  stopifnot(!anyNA(conditions[, get_required_conditions_names()]),
+  stopifnot(!anyNA(conditions[, get_required_conditions_names(nonNA = TRUE)]),
             is.numeric(conditions$nRespondents),
             all(conditions$nRespondents > 0),
+            all(is.finite(conditions$nRespondents)),
             as.integer(conditions$nRespondents) == conditions$nRespondents,
             is.numeric(conditions$projectBiasesSD),
             all(conditions$projectBiasesSD >= 0),
+            all(is.finite(conditions$projectBiasesSD)),
             is.character(conditions$nItemsProbs),
             "All expresions given by 'nItemsProbs' must evaluate to vectors of numeric values summing up to 1." =
               all(sapply(conditions$nItemsProbs,
@@ -102,30 +111,54 @@ check_conditions <- function(conditions) {
               all(conditions$arMeanStartUB > conditions$arMeanStartLB),
             is.numeric(conditions$arMeanChangeSD),
             all(conditions$arMeanChangeSD >= 0),
+            all(is.finite(conditions$arMeanChangeSD)),
             is.numeric(conditions$arMeanTrendLB),
             is.numeric(conditions$arMeanTrendUB),
-            "`arMeanTrendUB` must greater than ``arMeanTrendLB" =
+            "`arMeanTrendUB` must greater than `arMeanTrendLB`" =
               all(conditions$arMeanTrendUB > conditions$arMeanTrendLB),
             is.numeric(conditions$arVarStartLB),
             is.numeric(conditions$arVarStartUB),
             is.numeric(conditions$arVarChangeSD),
             all(conditions$arVarChangeSD >= 0),
+            all(is.finite(conditions$arVarChangeSD)),
             is.numeric(conditions$unstLoadingDefault),
+            all(is.finite(conditions$unstLoadingDefault)),
             is.numeric(conditions$difficultyMean),
             is.numeric(conditions$difficultySD),
+            all((is.na(conditions$difficultyMean) &
+                   is.na(conditions$difficultySD)) |
+                  (!is.na(conditions$difficultyMean) &
+                     !is.na(conditions$difficultySD))),
+            all(is.finite(conditions$difficultyMean) |
+                  is.na(conditions$difficultyMean)),
+            all(is.finite(conditions$difficultySD) |
+                  is.na(conditions$difficultySD)),
+            all(conditions$difficultySD >= 0 | is.na(conditions$difficultySD)),
             is.numeric(conditions$difficultyLB),
             is.numeric(conditions$difficultyUB),
+            "`difficultyUB` must greater than `difficultyLB`" =
+              all(conditions$difficultyUB > conditions$difficultyLB),
+            is.numeric(conditions$thresholdsIncrLB),
+            is.numeric(conditions$thresholdsIncrUB),
+            all(conditions$thresholdsIncrLB > 0),
+            "`thresholdsIncrUB` must greater than `thresholdsIncrLB`" =
+              all(conditions$thresholdsIncrUB > conditions$thresholdsIncrLB),
             is.numeric(conditions$unstLoadingsCSD),
             all(conditions$unstLoadingsCSD >= 0),
+            all(is.finite(conditions$unstLoadingsCSD)),
             is.numeric(conditions$unstLoadingsYSD),
             all(conditions$unstLoadingsYSD >= 0),
+            all(is.finite(conditions$unstLoadingsYSD)),
             is.numeric(conditions$difficultyCSD),
             all(conditions$difficultyCSD >= 0),
+            all(is.finite(conditions$difficultyCSD)),
             is.numeric(conditions$difficultyYSD),
             all(conditions$difficultyYSD >= 0),
+            all(is.finite(conditions$difficultyYSD)),
             is.character(conditions$variant),
             is.numeric(conditions$nCountriesPerGroup),
             all(conditions$nCountriesPerGroup > 0),
-            as.integer(conditions$nCountriesPerGroup) == conditions$nCountriesPerGroup)
+            all(is.finite(conditions$nCountriesPerGroup)),
+            all(as.integer(conditions$nCountriesPerGroup) == conditions$nCountriesPerGroup))
   return(conditions)
 }

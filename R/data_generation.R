@@ -113,8 +113,10 @@ generate_latent <- function(pCY, nRespondents) {
 generate_items <- function(pCY,
                            unstLoadingDefault,
                            # parameters of a trunc.-norm. distrib.
-                           difficultyMean, difficultySD,
+                           difficultyMean, difficultySD, # or a uniform distrib.
                            difficultyLB, difficultyUB,
+                           # parameters of a uniform distrib.
+                           thresholdsIncrLB, thresholdsIncrUB,
                            # standard deviations of trunc.-norm. distribs.
                            unstLoadingsCSD, unstLoadingsYSD,
                            difficultyCSD, difficultyYSD,
@@ -138,22 +140,36 @@ generate_items <- function(pCY,
   items <- items[items$item <= items$nItems,
                  c("project", "item", "respScaleLength")]
   items$unstLoading <- unstLoadingDefault
-  items$difficulty <- mnormt::rmtruncnorm(nrow(items),
-                                          difficultyMean, difficultySD,
-                                          difficultyLB, difficultyUB)
   items$relThresholds <-
     t(sapply(items$respScaleLength,
-             function(nCat, maxNCat) {
+             function(nCat, maxNCat, thresholdsIncrLB, thresholdsIncrUB) {
                if (nCat == 2) {
                  return(c(0, rep(NA_real_, maxNCat - 2)))
                }
-               relThresholds <- cumsum(stats::runif(nCat - 1, min = 0.3, max = 1))
-               relThresholds <- relThresholds - mean(relThresholds)
+               relThresholds <- cumsum(c(0,
+                                         stats::runif(nCat - 2,
+                                                      min = thresholdsIncrLB,
+                                                      max = thresholdsIncrUB)))
+               relThresholds <- relThresholds
                relThresholds <- c(relThresholds,
                                   rep(NA_real_, maxNCat - nCat))
                return(relThresholds)
              },
-             maxNCat = max(items$respScaleLength)))
+             maxNCat = max(items$respScaleLength),
+             thresholdsIncrLB = thresholdsIncrLB,
+             thresholdsIncrUB = thresholdsIncrUB))
+  if (is.na(difficultyMean) || is.na(difficultySD)) {
+    items$relThresholds <-
+      items$relThresholds + stats::runif(nrow(items), difficultyLB, difficultyUB)
+    items$difficulty <- rowMeans(items$relThresholds, na.rm = TRUE)
+    items$relThresholds <- items$relThresholds - items$difficulty
+  } else {
+    items$relThresholds <- items$relThresholds - rowMeans(items$relThresholds,
+                                                          na.rm = TRUE)
+    items$difficulty <- mnormt::rmtruncnorm(nrow(items),
+                                            difficultyMean, difficultySD,
+                                            difficultyLB, difficultyUB)
+  }
 
   countries <- unique(pCY[, c("country"), drop = FALSE])
   countries$unstLoadingCBias <-
@@ -235,6 +251,8 @@ generate_responses <- function(latent, items) {
 #' @param difficultySD a numeric - see [prepare_conditions]
 #' @param difficultyLB a numeric - see [prepare_conditions]
 #' @param difficultyUB a numeric - see [prepare_conditions]
+#' @param thresholdsIncrLB, a numeric - see [prepare_conditions]
+#' @param thresholdsIncrUB, a numeric - see [prepare_conditions]
 #' @param unstLoadingsCSD a numeric - see [prepare_conditions]
 #' @param unstLoadingsYSD a numeric - see [prepare_conditions]
 #' @param difficultyCSD a numeric - see [prepare_conditions]
@@ -263,6 +281,7 @@ generate_data <- function(pCGY,
                           unstLoadingDefault,
                           difficultyMean, difficultySD,
                           difficultyLB, difficultyUB,
+                          thresholdsIncrLB, thresholdsIncrUB,
                           unstLoadingsCSD, unstLoadingsYSD,
                           difficultyCSD, difficultyYSD,
                           relThresholdsL) {
@@ -304,8 +323,10 @@ generate_data <- function(pCGY,
   items <- generate_items(pCY = projectCountryYears,
                           unstLoadingDefault = unstLoadingDefault,
                           # parameters of a trunc.-norm. distrib.
-                          difficultyMean, difficultySD,
+                          difficultyMean, difficultySD, # or a uniform distrib.
                           difficultyLB, difficultyUB,
+                          # parameters of a uniform distrib.
+                          thresholdsIncrLB, thresholdsIncrUB,
                           # standard deviations of trunc.-norm. distribs.
                           unstLoadingsCSD = unstLoadingsCSD,
                           unstLoadingsYSD = unstLoadingsYSD,

@@ -4,7 +4,11 @@
 \alias{get_required_conditions_names}
 \title{Preparing simulation conditions}
 \usage{
-get_required_conditions_names()
+get_required_conditions_names(nonNA = FALSE)
+}
+\arguments{
+\item{nonNA}{a logical value - if \code{TRUE} returns only names of parameters
+which values cannot be set to missing values}
 }
 \value{
 a character vector
