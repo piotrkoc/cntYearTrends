@@ -44,11 +44,13 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
   if (!is.null(dcpo$countryMeans)) {
     countryMeans <- dplyr::left_join(countryMeans, dcpo$countryMeans,
                                      by = c("country", "year"))
-    meanToStd <- mean(countryMeans$mean_dcpo)
-    sDToStd <- stats::sd(countryMeans$mean_dcpo)
-    countryMeans <- dplyr::mutate(countryMeans,
-                                  dplyr::across(dplyr::ends_with("_dcpo"),
-                                                ~(. - meanToStd) / sDToStd))
+    meanToStd <- mean(countryMeans$mean_dcpo, na.rm = TRUE)
+    sDToStd <- stats::sd(countryMeans$mean_dcpo, na.rm = TRUE)
+    countryMeans <-
+      dplyr::mutate(countryMeans,
+                    dplyr::across(c("mean_dcpo", "q05_dcpo", "q95_dcpo"),
+                                  ~(. - meanToStd) / sDToStd),
+                    sd_dcpo = .data$sd_dcpo / sDToStd)
   }
   claassen <- estimate_claassen(data$responses, models$claassen,
                                 variant = "dichotomous", iter = iter,
@@ -56,11 +58,14 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
   if (!is.null(claassen$countryMeans)) {
     countryMeans <- dplyr::left_join(countryMeans, claassen$countryMeans,
                                      by = c("country", "year"))
-    meanToStd <- mean(countryMeans$mean_claassen)
-    sDToStd <- stats::sd(countryMeans$mean_claassen)
-    countryMeans <- dplyr::mutate(countryMeans,
-                                  dplyr::across(dplyr::ends_with("_claassen"),
-                                                ~(. - meanToStd) / sDToStd))
+    meanToStd <- mean(countryMeans$mean_claassen, na.rm = TRUE)
+    sDToStd <- stats::sd(countryMeans$mean_claassen, na.rm = TRUE)
+    countryMeans <-
+      dplyr::mutate(countryMeans,
+                    dplyr::across(c("mean_claassen",
+                                    "q05_claassen", "q95_claassen"),
+                                  ~(. - meanToStd) / sDToStd),
+                    sd_claassen = .data$sd_claassen / sDToStd)
   }
   claassenMulti <- estimate_claassen(data$responses, models$claassen,
                                      variant = "multinomial", iter = iter,
@@ -68,11 +73,14 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars) {
   if (!is.null(claassenMulti$countryMeans)) {
     countryMeans <- dplyr::left_join(countryMeans, claassenMulti$countryMeans,
                                      by = c("country", "year"))
-    meanToStd <- mean(countryMeans$mean_claassenMulti)
-    sDToStd <- stats::sd(countryMeans$mean_claassenMulti)
-    countryMeans <- dplyr::mutate(countryMeans,
-                                  dplyr::across(dplyr::ends_with("_claassenMulti"),
-                                                ~(. - meanToStd) / sDToStd))
+    meanToStd <- mean(countryMeans$mean_claassenMulti, na.rm = TRUE)
+    sDToStd <- stats::sd(countryMeans$mean_claassenMulti, na.rm = TRUE)
+    countryMeans <-
+      dplyr::mutate(countryMeans,
+                    dplyr::across(c("mean_claassenMulti",
+                                    "q05_claassenMulti", "q95_claassenMulti"),
+                                  ~(. - meanToStd) / sDToStd),
+                    sd_claassen = .data$sd_claassen / sDToStd)
   }
 
   return(list(modelSummaries = rbind(dcpo$modelSummary,
