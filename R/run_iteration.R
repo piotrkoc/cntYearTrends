@@ -25,7 +25,7 @@
 #'                       within the group of observed country-means)}
 #'   \item{items}{item parameters (generated, not estimated)}
 #' }
-run_iteration <- function(models, coverageScheme, condition, iter, max_redraws, stanPars) {
+run_iteration <- function(models, coverageScheme, condition, iter, stanPars, max_redraws) {
   stopifnot(is.list(models), all(c("dcpo", "claassen") %in% names(models)),
             all(sapply(models, inherits, what = "CmdStanModel")),
             is.data.frame(coverageScheme),

@@ -61,7 +61,7 @@ run_simulation <- function(conditions, coverageScheme, nIterPerCond,
           nrow(conditions),")\n#########################################\n\n",
           sep = "")
       resultsIter <- run_iteration(models, coverageScheme, conditions[j, ],
-                                   iter, max_redraws, stanPars)
+                                   iter, stanPars, max_redraws)
       modelSummaries <- dplyr::bind_rows(modelSummaries,
                                          cbind(i = i,
                                                cond = j,
