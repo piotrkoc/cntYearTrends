@@ -11,8 +11,9 @@
 #' of a file storing simulation results (that will be saved to the disk)
 #' @param iter optionally a positive integer - number of MCMC iterations in
 #' model estimation
-#' @param max_redraws optionally a non-negative integer - maximum re-draw attempts if Claassen
-#' aggregates are all 0 or all 1. If 0, no retries (proceed with a warning).
+#' @param max_redraws Optional non-negative integer. Maximum number of retries
+#' to re-generate data if any Claassen aggregate (Country–Year–Item–Project
+#' proportion of affirmative answers) equals 0 or 1. If 0, no retries are made
 #' @param stanPars optionally a list with additional arguments that will be
 #' passed to the Stan models' `sample` method - see [estimate_dcpo] and
 #' [estimate_claassen]
@@ -48,7 +49,7 @@ run_simulation <- function(conditions, coverageScheme, nIterPerCond,
             as.integer(nIterPerCond) == nIterPerCond, nIterPerCond > 0,
             is.character(suffix), length(suffix) == 1L, !anyNA(suffix),
             is.numeric(iter), length(iter) == 1L, iter > 0,
-            as.integer(iter) == iter, 
+            as.integer(iter) == iter,
             is.numeric(max_redraws), length(max_redraws) == 1L, max_redraws >= 0L,
             as.integer(max_redraws) == max_redraws,
             is.list(stanPars))

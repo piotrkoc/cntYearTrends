@@ -31,7 +31,7 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars, max
             is.data.frame(coverageScheme),
             is.data.frame(condition), nrow(condition) == 1L,
             is.numeric(iter), length(iter) == 1L, iter > 0,
-            as.integer(iter) == iter, 
+            as.integer(iter) == iter,
             is.numeric(max_redraws), length(max_redraws) == 1L, max_redraws >= 0L,
             as.integer(max_redraws) == max_redraws,
             is.list(stanPars))
@@ -39,13 +39,13 @@ run_iteration <- function(models, coverageScheme, condition, iter, stanPars, max
   redraw <- 0L
   repeat {
     data <- do.call(generate_data, c(pCGY = list(coverageScheme), condition))
-    
+
     agg_cls <- aggregate_data(data$responses, variant = "Claassen")
     prop <- agg_cls$RespN / agg_cls$Sample
-    degenerate <- all(prop == 0) || all(prop == 1)
-    
+    degenerate <- any(prop == 0 | prop == 1)
+
     if (!degenerate) break
-    
+
     redraw <- redraw + 1L
     if (redraw > max_redraws) {
       warning("Max redraws reached; proceeding with degenerate Claassen aggregates.")
