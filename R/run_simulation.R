@@ -42,7 +42,7 @@
 #' }
 #' @export
 run_simulation <- function(conditions, coverageScheme, nIterPerCond,
-                           suffix = "", iter = 1000L, max_redraws = 10L ,stanPars = list()) {
+                           suffix = "", iter = 1000L, max_redraws = 5L ,stanPars = list()) {
   check_conditions(conditions)
   check_coverage_scheme(coverageScheme, conditions)
   stopifnot(is.numeric(nIterPerCond), length(nIterPerCond) == 1,
